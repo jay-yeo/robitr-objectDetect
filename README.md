@@ -1,12 +1,14 @@
-# robitr-labelDetect v1.0
+# robitr-objectDetect v1.0
 
-Analyze objects media assets using AWS Rekognition and output a JSON file with the extracted results. 
+Analyze objects in still images and video files using AWS Rekognition and output a JSON file with the extracted results. 
 
 **Functions:**
 - Browser-based web application (React).
 - Upload images and video to AWS S3 Bucket.
 - Run AWS Rekognition "Label Detection" on uploaded media assets.
 - Download or view JSON results.
+
+*This project was created as part of a React and AWS Hackathon*
 
 ## Getting Started
 
