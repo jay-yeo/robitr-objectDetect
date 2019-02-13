@@ -132,7 +132,7 @@ REACT_APP_SNS_TOPIC_ARN=
 ```
 
 ## Run 
-Finally, to run the application type:
+Start the application from the Terminal:
 ```
 npm start
 ```
