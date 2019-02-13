@@ -1,6 +1,8 @@
 # robitr-objectDetect v1.0
 
-Analyze objects in still images and video files using AWS Rekognition and output a JSON file with the extracted results. 
+A demonstration project to analyze objects in still images and video files using AWS Rekognition and output a JSON file with the extracted results. 
+
+![Robitr objectDetect](https://github.com/jay-yeo/robitr-objectDetect/blob/master/docs/img/robitr_screencast.gif)
 
 **Functions:**
 - Browser-based web application (React).
@@ -8,11 +10,10 @@ Analyze objects in still images and video files using AWS Rekognition and output
 - Run AWS Rekognition "Label Detection" on uploaded media assets.
 - Download or view JSON results.
 
-*This project was created as part of a React and AWS Hackathon*
 
 ## Getting Started
 
-These instructions will get your copy of the source code up and running on your local machine deployed to the cloud on AWS.
+These instructions will get the application running on your local machine and to configure AWS Rekognition appropriately.
 
 ### Prerequisites
 
@@ -20,7 +21,7 @@ Prior to installation there are several steps to consider:
 
 #### Dependencies
 
-Please ensure that you have the following libraries and dependencies installed.
+Please ensure that you have the following libraries and dependencies installed:
 
 ```
 sudo apt install nodejs npm docker-ce
@@ -28,24 +29,24 @@ sudo apt install nodejs npm docker-ce
 
 #### AWS Console Access
 
-We will need to setup several services, roles and permissions using the AWS console. If you do not have root access to your AWS account, you may need access granted to IAM, EC2, S3, Rekognition and SNS.
+You will require the appropriate security policy to setup several services, roles and permissions using the AWS console. 
 
-## Setting up Amazon Web Services (AWS)
-You will need to setup the following access and permissions on AWS. 
+## Setting up AWS Rekognition
+To use Rekognition for object detection you will need to configure the following access and permissions using the AWS console. 
 
-*There are several access keys and parameters which we will need for steps later on, so it is advised that you have an empty text document open to quickly copy these items down.*
+>There are several access keys and parameters which we will need for steps later on, so it is advised that you have an empty text document open to quickly copy these items down.
 
-### 1. IAM User
-Create an IAM user account with Programmatic access and attach the following following permissions.  
+### 1. Create IAM User
+Create an IAM user account with Programmatic access and attach the following following permissions:  
 
 - AmazonSQSFullAccess
 - AmazonRekognitionFullAccess
 - AmazonS3ReadOnlyAccess
 
- Save the Access Key ID and Secret Access Key for later.
+Save the Access Key ID and Secret Access Key for later.
 
-### 2. Service Role
-Create an IAM service role to give Amazon Rekognition Video access to your Amazon SNS topics. 
+### 2. Rekognition Service Role
+Create an IAM service role to give AWS Rekognition access to your Amazon SNS topics. 
 
 Note the Role ARN of the service role.
 
@@ -72,7 +73,7 @@ Add the following inline policy to the IAM user that you created previously. Rep
 }
 ```           
 
-### Create SNS Topic:
+### 4. Create SNS Topic:
 We need to create a SNS topic to alert Rekognition when label results have been processed. 
 
 Create a new Topic and note the **Topic ARN**.
@@ -82,7 +83,7 @@ Create a new Topic and note the **Topic ARN**.
 arn:aws:sns:us-east-1:547045472775:RekognitionSNS
 ```
 
-### Create S3 Bucket:
+### 5. Create S3 Bucket:
 Create a new S3 Bucket or use an existing Bucket and apply the following CORS policy:
 
 ```
