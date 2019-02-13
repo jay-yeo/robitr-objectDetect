@@ -35,8 +35,8 @@ You will need to setup the following access and permissions on AWS.
 
 *There are several access keys and parameters which we will need for steps later on, so it is advised that you have an empty text document open to quickly copy these items down.*
 
-### IAM User
-Create an IAM user account with Programmatic access and attach the following the following permissions.  
+### 1. IAM User
+Create an IAM user account with Programmatic access and attach the following following permissions.  
 
 - AmazonSQSFullAccess
 - AmazonRekognitionFullAccess
@@ -44,9 +44,20 @@ Create an IAM user account with Programmatic access and attach the following the
 
  Save the Access Key ID and Secret Access Key for later.
 
-### Service Role
-Create an IAM service role to give Amazon Rekognition Video access to your Amazon SNS topics. Note the Amazon Resource Name (ARN) of the service role. 
+### 2. Service Role
+Create an IAM service role to give Amazon Rekognition Video access to your Amazon SNS topics. 
 
+Note the Role ARN of the service role.
+
+**Example Role ARN**
+```
+arn:aws:iam::547045472775:role/AWSRekognition
+```
+
+### 3. Add Inline Security Policy
+Add the following inline policy to the IAM user that you created previously. Replace the `Sid` field with a name of your choosing and paste the Role ARN we created in Step 2 into the `Resource` field.
+
+**Example Inline Security Policy**
 ```
 {
     "Version": "2012-10-17",
@@ -55,18 +66,24 @@ Create an IAM service role to give Amazon Rekognition Video access to your Amazo
             "Sid": "MyPolicyName",
             "Effect": "Allow",
             "Action": "iam:PassRole",
-            "Resource": "arn:Service role ARN from step 3"
+            "Resource": "arn:aws:iam::547045472775:role/AWSRekognition"
         }
     ]
 }
 ```           
-Add the following inline policy to the IAM user that you created previously. Replace `MyPolicyName` with a name of your choosing.
 
 ### Create SNS Topic:
-We need to create a SNS topic to alert Rekognition when label results have been processed. Create a new Topic and note the **TopicARN**.
+We need to create a SNS topic to alert Rekognition when label results have been processed. 
+
+Create a new Topic and note the **Topic ARN**.
+
+**Example SNS Topic ARN**
+```
+arn:aws:sns:us-east-1:547045472775:RekognitionSNS
+```
 
 ### Create S3 Bucket:
-Create an S3 Bucket with a unique name of your choice and apply the following CORS policy:
+Create a new S3 Bucket or use an existing Bucket and apply the following CORS policy:
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
@@ -82,13 +99,14 @@ Create an S3 Bucket with a unique name of your choice and apply the following CO
     </CORSRule>
 </CORSConfiguration>
 ```
-Afterwards, note the name of the S3 Bucket and save for later.
+Note the name of the S3 Bucket and save for later.
 
+> For additional help and troubleshooting please check out the AWS Rekognition [documentation](https://docs.aws.amazon.com/rekognition/latest/dg/what-is.html). 
 
 ## Installing
 
 #### Unzip source code
-Unzip the project on your local machine or EC2 instance:
+Unzip the project to your local machine or EC2 instance:
 
 ```
 unzip robitr-labeldetect
@@ -99,9 +117,10 @@ Install node modules:
 ```
 npm install
 ```
+## Configure
 
 #### Setting Environment Variables
-Access credentials and other unique parameters are set in the `.env` file, located in the project root directory. Please edit the file to reflect the appropriate authorization credentials and parameters which were set in the previous steps.
+Access credentials and other unique parameters are set in the `.env` file, located in the project root directory. Please edit the file to reflect the appropriate AWS authorization credentials and parameters which were set in the previous steps.
 
 ```
 REACT_APP_ACCESS_KEY_ID=
@@ -111,10 +130,12 @@ REACT_APP_ROLE_ARN=
 REACT_APP_SNS_TOPIC_ARN=
 ```
 
-#### Run Docker container
-Finally, run the Dockerfile to deploy the application:
+## Run 
+Finally, to run the application type:
 ```
-docker run -p 80:80 robitr-objectdetect:latest
+npm start
 ```
+Visit `http://localhost:3000/` in your browser.
 
-
+## Author
+**Jay Yeo** - *Initial work* - [jay-yeo](https://github.com/jay-yeo)
